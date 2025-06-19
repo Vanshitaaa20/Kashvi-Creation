@@ -93,17 +93,13 @@ const CataloguePage = () => {
       <div className="saree-grid">
         {filteredSarees.length > 0 ? (
           filteredSarees.map((saree) => {
-            const productId = saree._id || saree.productId;
+            const productId = saree._id ;
             if (!productId) return null; // Prevent rendering if no ID
 
             return (
               <div key={productId} className="saree-card">
                 <Link to={`/product/${productId}`} state={{ saree }}>
-                  <img
-                    src={saree.image || "https://via.placeholder.com/200"}
-                    alt={saree.name || "Saree Image"}
-                    onError={(e) => (e.target.src = "https://via.placeholder.com/200")}
-                  />
+                   <img src={saree.image} alt={saree.name} />
                   <h3>{saree.name}</h3>
                   <p><strong>Color:</strong> {saree.color || "N/A"}</p>
                   <p><strong>Style:</strong> {saree.style || "N/A"}</p>

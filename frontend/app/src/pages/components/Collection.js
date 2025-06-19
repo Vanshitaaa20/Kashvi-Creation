@@ -1,8 +1,11 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import "./Collection.css";
 
 function Collection() {
+  const navigate = useNavigate();
+
   const collections = [
     { name: "Designer Collection", image: "/images/designer-collection.jpg" },
     { name: "Bridal Collection", image: "/images/bridal-collection.jpg" }
@@ -21,8 +24,9 @@ function Collection() {
           </div>
         ))}
       </div>
+
       <div className="catalogue-btn-container">
-        <button className="catalogue-btn">
+        <button className="catalogue-btn" onClick={() => navigate("/catalogue")}>
           View Catalogue <FaArrowRight className="catalogue-icon" />
         </button>
       </div>
@@ -30,4 +34,4 @@ function Collection() {
   );
 }
 
-export default Collection;
+export default Collection;

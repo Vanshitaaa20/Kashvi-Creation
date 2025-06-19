@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./.env" }); // Load environment variables
+require("dotenv").config({ path: "./.env" });  // Load environment variables
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -38,12 +38,7 @@ app.use(passport.initialize());
 app.use(fileupload({ useTempFiles: true, tempFileDir: "./tmp/" })); // Fixed file upload temp dir
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ Connected to MongoDB Atlas"))
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err);
-    process.exit(1);
-  });
+mongoose.connect("mongodb://localhost:27017/kashviDB")
 
 // Cloudinary configuration
 cloudinary.config({
@@ -73,6 +68,15 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+
+// Serve static files from the React app build
+app.use(express.static(path.join(__dirname, "client/build")));
+
+// All other GET requests not handled before will return React's index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
+
 
 // ✅ Upload Image and Update Saree Document
 app.post("/upload-image/:id", async (req, res) => {

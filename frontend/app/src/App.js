@@ -22,7 +22,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/catalogue" element={<CataloguePage />} />
-      <Route path="/product/:id" element={<Productf />} /> {/* ✅ Ensure ID param */}
+      <Route path="/product/:id" element={<Productf />} />
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       <Route path="/cart" element={<Cart />} /> 
       <Route path="/wishlist" element={<Wishlist />} /> 
