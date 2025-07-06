@@ -1,5 +1,3 @@
-import React from "react";
-import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./Collection.css";
 
@@ -27,7 +25,7 @@ function Collection() {
 
       <div className="catalogue-btn-container">
         <button className="catalogue-btn" onClick={() => navigate("/catalogue")}>
-          View Catalogue <FaArrowRight className="catalogue-icon" />
+          View Catalogue
         </button>
       </div>
     </div>

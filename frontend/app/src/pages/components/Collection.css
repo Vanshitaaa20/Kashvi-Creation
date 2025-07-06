@@ -1,14 +1,47 @@
 /* Collection Section */
+.root {
+  --secondary: #2d5d7c; /* Deep teal */
+  --primary: #c890a7; /* Dusty rose */
+  --accent: #e8c2ca; /* Light pink */
+  --text-light: #f8f5f7; /* Light text */
+  --text-dark: #333333; /* Dark text */
+  --shadow: 0 8px 22px rgba(0, 0, 0, .08); /* Shadow for depth */
+  --transition: .25s ease; /* Transition for smooth effects */
+  font-family: 'Playfair Display', serif; /* Font family */
+}
+
 .collection-section {
+  padding: 4rem 1rem;
   text-align: center;
-  padding: 50px;
-  font-family: "Martel Sans", serif;
-  font-size: 2.5rem;
-  color: rgb(145, 89, 11);
-  /* text-shadow: 0 0 10px rgba(255, 217, 0, 0.407), 0 0 20px rgba(255, 255, 255, 0.844);
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out; */
+  background-color: #e3d4da;
+  position: relative;
+}
+
+/* Collection Title */
+.collection-section h2 {
+  margin-left: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto 2.5rem;
+  font-family: 'Playfair Display', serif;
+  padding: 0 1rem;
+  font-size: 2.2rem;
+  position: relative;
+  display: inline-block;
+  color: rgb(123, 93, 17);
+}
+
+.collection-section h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 60%;
+  height: 2px;
+  background: rgb(123, 93, 17);
+  transform: translateX(-50%);
 }
 
 /* Collection Grid */
@@ -28,7 +61,24 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Playfair Display', serif;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease; /* Added opacity transition */
+  display: flex;
+  flex-direction: column; /* Stack image and overlay vertically */
+  opacity: 0; /* Start hidden for animation */
+  animation: fadeIn 0.5s forwards; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Slide in from below */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .collection-card:hover {
@@ -42,6 +92,11 @@
   height: 100%;
   object-fit: cover; /* Ensures the image covers the card */
   border-radius: 12px;
+  transition: transform var(--transition); /* Smooth zoom effect */
+}
+
+.collection-card:hover .collection-image {
+  transform: scale(1.05); /* Slight zoom on hover */
 }
 
 /* Overlay for text */
@@ -55,7 +110,13 @@
   padding: 15px;
   font-size: 1.5rem;
   font-weight: bold;
+  transition: background var(--transition); /* Transition for background change */
 }
+
+.collection-card:hover .collection-overlay {
+  background: rgba(0, 0, 0, 0.8); /* Darker overlay on hover */
+}
+
 
 /* Catalogue Button */
 .catalogue-btn-container {
@@ -68,13 +129,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--primary-color);
-  color: white;
+  background: #533B4D;
   padding: 14px 28px;
   border: none;
+  font-family: 'Playfair Display', serif;
   font-size: 20px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
   border-radius: 8px;
   font-weight: bold;
   gap: 12px;
@@ -82,7 +143,7 @@
 }
 
 .catalogue-btn:hover {
-  background: var(--secondary-color);
+  background: var(--secondary);
   transform: scale(1.1);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -148,5 +209,6 @@
 
   .catalogue-btn {
     font-size: 14px;
-    padding: 8px 16px;}
+    padding: 8px 16px;
+  }
 }

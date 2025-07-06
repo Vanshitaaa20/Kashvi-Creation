@@ -1,14 +1,25 @@
 :root {
-    --primary-color: #180e31;
-    --secondary-color: #a99167;
-    --text-color: #fff;
-    --accent-color: #e5c07b;
+  --primary: #2D5D7C;
+  /* Deep teal - now primary color */
+  --secondary: #C890A7;
+  /* Dusty rose - now secondary */
+  --accent: #E8C2CA;
+  /* Light pink */
+  --text-light: #F8F5F7;
+  /* Light text for dark backgrounds */
+  --text-dark: #333333;
+  /* Dark text for light backgrounds */
+  --nav-bg: #533B4D;
+  /* Updated navbar color */
+  /* Light gray for body */
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-family: 'Playfair Display', serif;
 }
 
 .abouth-container {
-    color: var(--text-color);
+    color: #dcd3d7;
     padding: 40px 10%;
-    background: transparent;
     font-family: "Cinzel";
 }
 

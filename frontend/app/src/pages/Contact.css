@@ -1,10 +1,9 @@
 :root {
-    --primary-color: #180e31;
-  font-family: "Cinzel";
-    --secondary-color: #a99167;
-
+  --primary-color: #533B4D;
+  --secondary-color: #fbf7f3;
+  --text-color: #333;
+  --background-color: #fbf7f3;
 }
-
 .contact-container {
     display: flex;
     font-family: "Cinzel";

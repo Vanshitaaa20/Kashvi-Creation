@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./Catalogue.css";
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 const CataloguePage = () => {
@@ -40,7 +39,6 @@ const CataloguePage = () => {
 
   return (
     <div className="explore-container">
-      <Header />
       <h1 style={{ paddingTop: "80px" }}>Explore Our Saree Collection</h1>
 
       <button className="filter-button" onClick={() => setShowFilterModal(true)}>
