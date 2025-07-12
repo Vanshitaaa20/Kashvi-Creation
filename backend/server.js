@@ -16,11 +16,6 @@ require("./config/passport"); // Load Passport strategies
 
 const app = express(); // Initialize Express app
 
-// Debugging logs for critical environment variables
-console.log("🔑 JWT_SECRET:", process.env.JWT_SECRET ? "Loaded ✅" : "MISSING ❌");
-console.log("🔑 REFRESH_SECRET:", process.env.REFRESH_SECRET ? "Loaded ✅" : "MISSING ❌");
-console.log("🔍 MongoDB URI:", process.env.MONGO_URI ? "Loaded ✅" : "MISSING ❌");
-
 // Exit if critical environment variables are missing
 if (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.MONGO_URI) {
   console.error("❌ Missing required environment variables. Exiting...");
@@ -38,7 +33,12 @@ app.use(passport.initialize());
 app.use(fileupload({ useTempFiles: true, tempFileDir: "./tmp/" })); // Fixed file upload temp dir
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/kashviDB")
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("✅ MongoDB connected successfully!"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection failed:", err.message);
+    process.exit(1);
+  });
 
 // Cloudinary configuration
 cloudinary.config({

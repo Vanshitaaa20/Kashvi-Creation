@@ -31,10 +31,10 @@ body {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 1rem 5%;
+  padding: 0.2rem 4%;
   box-shadow: var(--shadow);
   position: fixed;
-  width: 100%;
+  width: 93%;
   top: 0;
   z-index: 1000;
   transition: var(--transition);
@@ -135,8 +135,8 @@ body {
 /* Menu list */
 .dropdown-menu ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
+  /* padding: 10px, 10px;
+  margin: 10px, 10px; */
 }
 
 .dropdown-link {
