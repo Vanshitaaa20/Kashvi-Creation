@@ -1,99 +1,216 @@
-/* ProductGrid1.css */
-@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Athiti:wght@200;300;400;500;600;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Frank+Ruhl+Libre:wght@300..900&family=Imperial+Script&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-:root {
-  --primary-color: #180e31;
-  --secondary-color: #a99167;
-  --primary-font: "Martel Sans, serif";
-}
-
+/* ----------  SECTION ---------- */
 .product-section {
+  background-color: #ebd6dd;
+  padding: 4rem 1rem;
   text-align: center;
-  padding: 50px;
-  background: transparent;
+  position: relative;
 }
 
-.animated-heading {
-  font-family: var(--primary-font);
-  font-size: 2.5rem;
-  color: rgb(145, 89, 11);
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+.product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto 2.5rem;
+  font-family: 'Playfair Display', serif;
+  padding: 0 1rem;
 }
 
-.animated-heading.glow {
-  opacity: 1;
-  transform: translateY(0);
+.product-header h2 {
+  font-size: 2.2rem;
+  position: relative;
+  display: inline-block;
+  color: rgb(123, 93, 17);
 }
 
+.product-header h2::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 60%;
+  height: 2px;
+  background: rgb(123, 93, 17);
+  transform: translateX(-50%);
+}
+
+.product-header a {
+  font-size: .95rem;
+  color: rgb(123, 93, 17);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.product-header a:hover {
+  text-decoration: underline;
+}
+
+/* ----------  PRODUCT GRID ---------- */
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  padding: 30px;
-  justify-content: center;
+  display: flex;
+  gap: 2.5rem;
+  scroll-behavior: smooth; /* Smooth snap when arrows pressed */
+  justify-content: center; /* Center the grid */
 }
 
 .product-card {
-  width: 100%;
-  max-width: 400px;
-  height: 400px;
-  border-radius: 12px;
-  box-shadow: none;
+  flex: 0 0 260px;
+  background: var(--body-bg);
+  border: 1.5px solid #cfb108; /* Golden border */
+  border-radius: 53px;
+  box-shadow: var(--shadow);
+  padding-bottom: 1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smoother transition */
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-  overflow: hidden;
-  background: transparent;
-}
-
-.product-card.zoom-in {
-  opacity: 1;
-  transform: scale(1);
-  animation: scaleUp 0.6s ease-out forwards;
-}
-
-@keyframes scaleUp {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  overflow: hidden; /* For pseudo-element effects */
 }
 
 .product-card:hover {
-  transform: scale(1.05);
-  box-shadow: none;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  border-color: #FFC000; /* Slightly brighter gold on hover */
 }
 
-.product-video {
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 215, 0, 0) 0%,
+    rgba(255, 215, 0, 0.1) 50%,
+    rgba(255, 215, 0, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+  opacity: 0;
+}
+
+.product-card:hover::before {
+  opacity: 1;
+  animation: shine 1.5s ease-in-out infinite;
+}
+@keyframes shine {
+  0% {
+    left: -50%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+/* ----------  CARD – IMAGE / “ARCH” SHAPE ---------- */
+.card-img {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  overflow: hidden;
+  clip-path: path("M0 360L0 60Q0 0 60 0L200 0Q260 0 260 60L260 360Z");
+}
+
+.card-img img {
   width: 100%;
   height: 100%;
+  transition: transform 0.5s ease, filter 0.3s ease;
   object-fit: cover;
-  border-radius: 12px;
 }
 
-@media (max-width: 768px) {
-  .product-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-  }
+.product-card:hover .card-img img {
+  transform: scale(1.05);
+  filter: brightness(1.05);
 }
 
-@media (max-width: 480px) {
-  .product-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
+/* Product code pill in top-right corner */
+.card-code {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--secondary);
+  color: var(--text-light);
+  font-size: .75rem;
+  padding: .15rem .55rem;
+  border-radius: 8px;
+  letter-spacing: .5px;
+}
+
+/* ----------  CARD – DETAILS ---------- */
+.card-name {
+  margin: 1rem 1rem 0.5rem;
+  font-size: 1rem; /* Increased font size for better readability */
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-dark);
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: .25rem 1rem 0;
+}
+
+.add-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  background-color: var(--secondary);
+  color: var(--text-light);
+  padding: .45rem .7rem;
+  border-radius: 25px;
+  font-size: .9rem; /* Slightly larger font size */
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  color: var(--text-light)
+}
+
+.wish-btn {
+  margin-left: .75rem;
+  border: 1px solid var(--secondary);
+  background: var(--accent);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--secondary);
+  /* Center the icon perfectly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove any default padding */
+}
+
+.wish-btn svg {
+  margin: 0; /* Remove any default margins from the icon itself */
+  width: 16px; /* Explicit width for the icon */
+  height: 16px; /* Explicit height for the icon */
+}
+
+.wish-btn:hover {
+  background: var(--secondary);
+  color: var(--text-light);
+}
+.wish-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+@media (max-width: 540px) {
   .product-card {
-    height: 250px;
+    flex: 0 0 210px;
   }
-  .product-video {
-    height:100%;}}
+  .card-img {
+    height: 290px;
+  }
+}

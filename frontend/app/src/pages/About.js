@@ -1,9 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Footer from "./components/Footer";
-import Header from "./components/Header";
-import "./Abouth.css";
-
+import "./About.css"
 
 
 function Navbar() {
@@ -32,7 +30,6 @@ const About = () => {
     <>
     <Navbar></Navbar>
     <NavLinks></NavLinks>
-      <Header />
       <div className="abouth-container">
         {/* Hero Section */}
         <section className="abouth-hero">

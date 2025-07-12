@@ -4,7 +4,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register"; 
 import CataloguePage from "./pages/Catalogue";
 import Cart from "./pages/cartf";
-import Productf from "./pages/Productf";
+import ProductGrid from "./pages/components/ProductGrid1";
+import Collectiongrid from "./pages/components/ProductGrid2";
 import Homepage from "./pages/Homepage";
 import Wishlist from "./pages/Wishlist";
 
@@ -22,7 +23,8 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/catalogue" element={<CataloguePage />} />
-      <Route path="/product/:id" element={<Productf />} /> {/* ✅ Ensure ID param */}
+      <Route path="/product/:id" element={<ProductGrid />} />
+      <Route path="/collection" element={<Collectiongrid />} />
       <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       <Route path="/cart" element={<Cart />} /> 
       <Route path="/wishlist" element={<Wishlist />} /> 

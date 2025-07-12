@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "./.env" }); // Load environment variables
+require("dotenv").config({ path: "./.env" });  // Load environment variables
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -15,11 +15,6 @@ const cloudinary = require("cloudinary").v2;
 require("./config/passport"); // Load Passport strategies
 
 const app = express(); // Initialize Express app
-
-// Debugging logs for critical environment variables
-console.log("🔑 JWT_SECRET:", process.env.JWT_SECRET ? "Loaded ✅" : "MISSING ❌");
-console.log("🔑 REFRESH_SECRET:", process.env.REFRESH_SECRET ? "Loaded ✅" : "MISSING ❌");
-console.log("🔍 MongoDB URI:", process.env.MONGO_URI ? "Loaded ✅" : "MISSING ❌");
 
 // Exit if critical environment variables are missing
 if (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.MONGO_URI) {
@@ -38,10 +33,10 @@ app.use(passport.initialize());
 app.use(fileupload({ useTempFiles: true, tempFileDir: "./tmp/" })); // Fixed file upload temp dir
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("✅ MongoDB connected successfully!"))
   .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err);
+    console.error("❌ MongoDB connection failed:", err.message);
     process.exit(1);
   });
 
@@ -73,6 +68,15 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", ordersRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishlistRoutes);
+
+// Serve static files from the React app build
+app.use(express.static(path.join(__dirname, "client/build")));
+
+// All other GET requests not handled before will return React's index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
+
 
 // ✅ Upload Image and Update Saree Document
 app.post("/upload-image/:id", async (req, res) => {

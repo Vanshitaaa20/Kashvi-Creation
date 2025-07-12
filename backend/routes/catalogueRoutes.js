@@ -1,32 +1,14 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
+const Saree = require("../models/Saree");
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const router = express.Router();
 
-// ✅ Serve static images from the 'uploads' folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static images (if needed — usually in server.js, not here)
+router.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/kashviDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-// ✅ Define Saree Schema & Model (Use relative image paths)
-const SareeSchema = new mongoose.Schema({
-  name: String,
-  image: String, // Store local path, e.g., "/uploads/saree1.jpg"
-  color: String,
-  style: String
-});
-const Saree = mongoose.model("Saree", SareeSchema);
-
-// ✅ API to Fetch Sarees
-app.get("/api/catalogue", async (req, res) => {
+// GET all sarees
+router.get("/", async (req, res) => {
   try {
     const sarees = await Saree.find();
     res.json(sarees);
@@ -35,8 +17,8 @@ app.get("/api/catalogue", async (req, res) => {
   }
 });
 
-// ✅ API to Get a Single Saree by ID
-app.get("/api/product/:id", async (req, res) => {
+// GET single saree by ID
+router.get("/:id", async (req, res) => {
   try {
     const saree = await Saree.findById(req.params.id);
     if (!saree) return res.status(404).json({ message: "Product Not Found" });
@@ -46,6 +28,4 @@ app.get("/api/product/:id", async (req, res) => {
   }
 });
 
-// ✅ Start Server
-const PORT = 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = router;

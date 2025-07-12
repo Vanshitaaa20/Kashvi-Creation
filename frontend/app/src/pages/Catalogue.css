@@ -1,115 +1,234 @@
-/* 🔹 General Page Layout */
-.explore-container {
-  font-family: "Cinzel";
-  background-color: #f9f9f9;
-  padding-bottom: 50px;
+:root {
+  --primary: #2D5D7C;
+  --secondary: #C890A7;
+  --accent: #E8C2CA;
+  --gold: #74644a;
+  --plum: #533B4D;
+  --bg-light: #ebd6dd;
+  --text-dark: #2c2c2c;
+  --text-medium: #555;
+  --text-light: white;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
 }
 
-/* 🔹 Page Title */
-h1 {
+/* 🌸 Main Explore Container */
+.explore-container {
+  font-family: 'Playfair Display', serif;
+  background: var(--bg-light);
+  min-height: 100vh;
+  padding-top: 80px;
+}
+
+/* 🌸 Heading */
+.explore-container h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: var(--plum);
+  line-height: 1.3;
   text-align: center;
-  color: #333;
-  font-size: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.07);
+  position: relative;
+}
+
+.explore-container h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--gold);
+  margin: 16px auto 0;
+  border-radius: 2px;
+}
+
+/* 🌸 Layout */
+.catalogue-layout {
+  display: flex;
+  max-width: 1900px;
+  margin: 0 auto;
+  padding: 0 auto;
+  gap: 60px;
+}
+
+/* 🌸 Sidebar */
+.filter-sidebar {
+  flex: 0 0 240px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.filter-sidebar h3 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: var(--plum);
+}
+
+.filter-section {
   margin-bottom: 20px;
 }
 
-/* 🔹 Filter Button */
-.filter-button {
-  display: block;
-  margin: 20px auto;
-  padding: 12px 20px;
-  font-size: 16px;
-  background: #ff4081;
-  color: white;
-  font-weight: bold;
-  border: none;
+.filter-section h4 {
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #444;
+  margin: 8px 0;
+}
+
+.filter-checkbox input[type="checkbox"] {
+  transform: scale(1.1);
   cursor: pointer;
+}
+
+/* 🌸 Reset Button */
+.reset-filter-button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  font-weight: 600;
   border-radius: 8px;
-  transition: all 0.3s ease-in-out;
-  text-transform: uppercase;
+  background-color: #e0e0e0;
+  color: #333;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.filter-button:hover {
-  background: #e03570;
-  transform: scale(1.08);
+.reset-filter-button:hover {
+  background-color: #c2c2c2;
 }
 
-/* 🔹 Saree Grid Layout */
+/* 🌸 Product Grid */
 .saree-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 200px)); 
   gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
+  flex: 1 1;
+  width: 100%;
 }
 
-/* 🔹 Saree Card */
+/* 🌸 Product Card */
 .saree-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background: transparent ;
+  padding: 6px;
+  transition: var(--transition);
   overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.saree-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  border-color: #FFC000;
+}
+
+.saree-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 215, 0, 0) 0%,
+    rgba(255, 215, 0, 0.1) 50%,
+    rgba(255, 215, 0, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+  opacity: 0;
+  z-index: 0;
+}
+
+.saree-card:hover::before {
+  opacity: 1;
+  animation: shine 1.5s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% { left: -50%; }
+  100% { left: 150%; }
 }
 
 .saree-card img {
   width: 100%;
-  height: 250px; /* Ensure uniform height */
+  height: 280px; 
   object-fit: cover;
-  border-radius: 8px;
+  transition: transform 0.4s ease, filter 0.3s ease;
+  z-index: 1;
 }
 
-/* 🔹 Title */
-.saree-card h3 {
-  margin: 12px 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-}
-
-/* 🔹 Text Styling */
-.saree-card p {
-  font-size: 1.1rem;
-  color: #555;
-  margin: 5px 0;
-}
-
-/* 🔹 Add to Cart Button */
-.saree-card button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  font-size: 1.1rem;
-  border: none;
-  background-color: #d32f2f;
-  color: white;
-  cursor: pointer;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-}
-
-.saree-card button:hover {
-  background-color: #b71c1c;
+.saree-card:hover img {
   transform: scale(1.05);
+  filter: brightness(1.05);
 }
 
-/* 🔹 Responsive Design */
-@media (max-width: 768px) {
+/* 🌸 Card Text */
+.saree-card h3 {
+  margin: 1rem 0.5rem 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--plum);
+  text-align: left;
+}
+
+.saree-card p {
+  margin: 0 0.5rem 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-medium);
+  text-align: left;
+}
+
+.saree-card p strong {
+  font-weight: 600;
+}
+
+/* 🌸 Responsive Design */
+@media (max-width: 992px) {
+  .catalogue-layout {
+    flex-direction: column;
+  }
+
+  .filter-sidebar {
+    width: 100%;
+    position: static;
+  }
+
   .saree-grid {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 480px) {
-  .saree-card {
-      max-width: 90%;
-      padding: 15px;
+  .saree-grid {
+    grid-template-columns: 1fr;
   }
 
-  .filter-modal {
-      width: 95%;
+  .saree-card h3,
+  .saree-card p {
+    font-size: 1rem;
+  }
+
+  .saree-card img {
+    height: 200px;
   }
 }

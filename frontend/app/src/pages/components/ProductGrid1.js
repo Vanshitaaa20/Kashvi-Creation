@@ -1,53 +1,83 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import "./ProductGrid1.css";
+import React, { useEffect, useRef } from "react";
+import {
+  FaHeart,
+  FaShoppingCart,
+} from "react-icons/fa";
+import "./ProductGrid1.css";    
 
-function ProductGrid() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
+const products = [
+  {
+    id: 20341,
+    name: "Rose Pink with Golden Embroidery",
+    img: "/images/product1.jpg",
+  },
+  {
+    id: 20342,
+    name: "Crimson Red with Intricate Gold Embroidery",
+    img: "/images/product2.jpg",
+  },
+  {
+    id: 20343,
+    name: "Emerald Green with Gold Embroidery",
+    img: "/images/product3.jpg",
+  },
+  {
+    id: 20344,
+    name: "Crimson Red with Gold Embroidery",
+    img: "/images/product4.jpg",
+  },
+];
 
-  const handleIntersection = useCallback((entries) => {
-    if (entries[0].isIntersecting) {
-      setIsVisible(true);
-    }
-  }, []);
+export default function ProductGrid() {
+  const trackRef = useRef(null);
 
   useEffect(() => {
-    const target = sectionRef.current;
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.2, // Triggers when 20% of the section is visible
+    const cards = trackRef.current?.children;
+    [...cards].forEach((card, i) => {
+      card.style.opacity = 0;
+      card.style.transform = "translateY(25px)";
+      setTimeout(() => {
+        card.style.opacity = 1;
+        card.style.transform = "translateY(0)";
+        card.style.transition = "all .45s ease";
+      }, 150 * i);
     });
-
-    if (target) {
-      observer.observe(target);
-    }
-
-    return () => {
-      if (target) {
-        observer.unobserve(target);
-      }
-    };
-  }, [handleIntersection]);
+  }, []);
 
   return (
-    <div className="product-section" ref={sectionRef}>
-      <h2 className={`animated-heading ${isVisible ? "glow" : ""}`}>BEST SELLERS</h2>
-      <div className="product-grid">
-        {[...Array(4)].map((_, index) => (
-          <a href={`/product/${index + 1}`} key={index} className="product-link">
-            <div
-              className={`product-card ${isVisible ? "zoom-in" : ""}`}
-              style={{ animationDelay: `${index * 0.3}s` }}
-            >
-              <video className="product-video" autoPlay loop muted playsInline loading="lazy">
-                <source src={`/videos/product${index + 1}.mp4`} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+    <section className="product-section">
+      {/* heading */}
+      <header className="product-header">
+        <h2>Featured Collection</h2>
+        <a href="/collections">View All Collection →</a>
+      </header>
+
+      {/* track */}
+      <div className="slider-wrapper">
+        <div className="product-grid" ref={trackRef}>
+          {products.map((p) => (
+            <div className="product-card" key={p.id}>
+              <a href={`/product/${p.id}`} className="card-link">
+                <div className="card-img">
+                  <img src={p.img} alt={p.name} loading="lazy" />
+                  <span className="card-code">{p.id}</span>
+                </div>
+                <p className="card-name">{p.name}</p>
+              </a>
+
+              <div className="card-actions">
+                <button className="add-btn">
+                  <FaShoppingCart aria-hidden />
+                  Add&nbsp;to&nbsp;Cart
+                </button>
+                <button className="wish-btn">
+                  <FaHeart aria-hidden />
+                </button>
+              </div>
             </div>
-          </a>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
-
-export default ProductGrid;
