@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./ProductGrid2.css";
 
-function ProductGrid() {
+function Collectiongrid() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
 
@@ -27,21 +27,23 @@ function ProductGrid() {
   }, []);
 
   return (
-    <div className="product-section" ref={sectionRef}>
-      <h2 className={`animated-heading ${isVisible ? "glow" : ""}`}>FEATURED COLLECTION</h2>
-      <div className="product-grid">
+    <div className="featured-section" ref={sectionRef}>
+      <h2 className={`featured-heading ${isVisible ? "glow" : ""}`}>
+        FEATURED COLLECTION
+      </h2>
+      <div className="featured-grid">
         {[...Array(4)].map((_, index) => (
           <div
-            className={`product-card ${isVisible ? "zoom-in" : ""}`}
+            className={`featured-card ${isVisible ? "zoom-in" : ""}`}
             key={index}
             style={{ animationDelay: `${index * 0.3}s` }}
           >
-            <img 
-              src={`/images/product${index + 1}.jpg`} 
-              alt={`Product ${index + 1}`} 
-              className="product-image"
+            <img
+              src={`/images/product${index + 1}.jpg`}
+              alt={`Product ${index + 1}`}
+              className="featured-image"
             />
-            <p>Product {index + 1}</p> {/* Placeholder for product name */}
+            <p>Product {index + 1}</p>
           </div>
         ))}
       </div>
@@ -49,4 +51,4 @@ function ProductGrid() {
   );
 }
 
-export default ProductGrid;
+export default Collectiongrid;

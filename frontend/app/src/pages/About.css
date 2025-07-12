@@ -1,0 +1,214 @@
+:root {
+  --primary: #533B4D;
+  --secondary: #c890a7;
+  --light: #fbf7f3;
+  --dark: #333;
+  --accent: #E8C2CA;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --transition: all 0.3s ease;
+}
+
+/* === General Layout === */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light);
+  color: var(--dark);
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: var(--primary);
+  padding: 20px;
+  text-align: center;
+}
+
+.logo {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.nav-links-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  background: var(--light);
+}
+
+.kashvi-logo {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* === Hero Section === */
+.abouth-hero {
+  position: relative; /* Replace with your own */
+  background-size: cover;
+  background-position: center;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.abouth-hero-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.abouth-hero h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.abouth-animated-text {
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+/* === About Content === */
+.abouth-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+}
+
+.abouth-text {
+  flex: 1 1 400px;
+  max-width: 600px;
+}
+
+.abouth-title {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.abouth-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--dark);
+}
+
+.abouth-image {
+  flex: 1 1 300px;
+  max-width: 400px;
+}
+
+.abouth-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* === Key Features === */
+.abouth-key-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px 20px;
+  background: #f3e8ee;
+}
+
+.abouth-feature-card {
+  background: white;
+  border-radius: 10px;
+  padding: 30px 20px;
+  width: 280px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s;
+}
+
+.abouth-feature-card:hover {
+  transform: translateY(-6px);
+}
+
+.abouth-feature-card img {
+  width: 60px;
+  margin-bottom: 15px;
+}
+
+.abouth-feature-card h3 {
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.abouth-feature-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* === Call to Action === */
+.abouth-cta {
+  background: var(--primary);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.abouth-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.abouth-btn {
+  background: var(--secondary);
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.abouth-btn:hover {
+  background: var(--accent);
+  color: var(--dark);
+}
+
+/* === Footer (basic example) === */
+.footer {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .abouth-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .abouth-hero {
+    height: 50vh;
+  }
+
+  .abouth-title {
+    text-align: center;
+  }
+
+  .abouth-text,
+  .abouth-image {
+    text-align: center;
+  }
+}
