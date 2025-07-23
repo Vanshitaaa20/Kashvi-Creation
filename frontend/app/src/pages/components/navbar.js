@@ -64,8 +64,8 @@ function Navbar() {
             onMouseLeave={() => setDropdownOpen(false)}
           >
             <ul>
-              <li><Link to="/" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Home</Link></li>
-              <li><Link to="/shop" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Shop</Link></li>
+              <li><Link to="/home" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Home</Link></li>
+              <li><Link to="/catalogue" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Shop</Link></li>
               <li><Link to="/about" className="dropdown-link" onClick={() => setDropdownOpen(false)}>About</Link></li>
               <li><Link to="/blogs" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Blog</Link></li>
               <li><Link to="/contact" className="dropdown-link" onClick={() => setDropdownOpen(false)}>Contact</Link></li>
@@ -79,7 +79,7 @@ function Navbar() {
           <button className="icon-btn" aria-label="Favorites"><FaHeart /></button>
           <button className="icon-btn cart-btn" aria-label="Shopping Cart">
             <FaShoppingCart />
-            <span className="cart-badge">3</span>
+            <span className="cart-badge"></span>
           </button>
         </div>
       </div>

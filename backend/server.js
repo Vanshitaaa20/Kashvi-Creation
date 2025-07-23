@@ -1,136 +1,106 @@
-require("dotenv").config({ path: "./.env" });  // Load environment variables
+require("dotenv").config({ path: "./.env" });
 
 const express = require("express");
-const mongoose = require("mongoose");
-const passport = require("passport");
+const path = require("path");
+const fs = require("fs");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
-const bodyParser = require("body-parser");
-const path = require("path");
+const passport = require("passport");
 const fileupload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
+const connectToDatabase = require("./config/db");
 
-require("./config/passport"); // Load Passport strategies
+const app = express();
 
-const app = express(); // Initialize Express app
+// ─── ENV VALIDATION ───────────────────────────────
+const requiredEnvs = [
+  "JWT_SECRET",
+  "REFRESH_SECRET",
+  "MONGO_URI",
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET"
+];
 
-// Exit if critical environment variables are missing
-if (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.MONGO_URI) {
-  console.error("❌ Missing required environment variables. Exiting...");
+const missing = requiredEnvs.filter(key => !process.env[key]);
+if (missing.length) {
+  console.error(`❌ Missing env vars: ${missing.join(", ")}`);
   process.exit(1);
 }
 
-// Middleware Setup
+// ─── CONNECT TO DB ────────────────────────────────
+connectToDatabase();
+
+// ─── MIDDLEWARE ───────────────────────────────────
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(helmet());
 app.use(compression());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use(bodyParser.json());
 app.use(passport.initialize());
-app.use(fileupload({ useTempFiles: true, tempFileDir: "./tmp/" })); // Fixed file upload temp dir
+app.use(fileupload({ useTempFiles: true, tempFileDir: "./tmp/" }));
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("✅ MongoDB connected successfully!"))
-  .catch((err) => {
-    console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1);
-  });
+require("./config/passport");
 
-// Cloudinary configuration
+// ─── CLOUDINARY CONFIG ────────────────────────────
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Import Models
-const Saree = require("./models/Saree");
+// ─── ROUTES & MODELS ──────────────────────────────
+const Product = require("./models/Saree");
 const Cart = require("./models/Cartb");
 const Order = require("./models/Orders");
-const Wishlist = require("./models/Wishlist");
 
-// Import Routes
-const authRoutes = require("./routes/authRoutes");
-const catalogueRoutes = require("./routes/catalogueRoutes");
-const productRoutes = require("./routes/productRoutes");
-const ordersRoutes = require("./routes/ordersRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const wishlistRoutes = require("./routes/wishlistRoutes");
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/products", require("./routes/productRoutes"));
+app.use("/api/orders", require("./routes/ordersRoutes"));
+app.use("/api/cart", require("./routes/cartRoutes"));
+app.use("/api/wishlist", require("./routes/wishlistRoutes"));
 
-// Register Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/catalogue", catalogueRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/orders", ordersRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/wishlist", wishlistRoutes);
-
-// Serve static files from the React app build
-app.use(express.static(path.join(__dirname, "client/build")));
-
-// All other GET requests not handled before will return React's index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
-
-
-// ✅ Upload Image and Update Saree Document
+// ─── IMAGE UPLOAD ROUTE ───────────────────────────
 app.post("/upload-image/:id", async (req, res) => {
   try {
-    console.log("🔹 Received request for product ID:", req.params.id);
-
     const productId = req.params.id.trim();
-    if (!req.files || !req.files.image) {
-      console.log("❌ No image file uploaded!");
+    if (!req.files?.image) {
       return res.status(400).json({ error: "❌ No image file uploaded" });
     }
 
-    const file = req.files.image;
-    console.log("🔹 Uploading file:", file.name);
+    const result = await cloudinary.uploader.upload(
+      req.files.image.tempFilePath,
+      { folder: "sarees" }
+    );
 
-    // ✅ Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(file.tempFilePath, {
-      folder: "sarees",
-    });
-
-    console.log("✅ Cloudinary Upload Success:", result.secure_url);
-
-    // ✅ Update MongoDB to Store Cloudinary Image URL
-    const updatedSaree = await Saree.findOneAndUpdate(
-      { productId }, // Ensure productId is used instead of _id
-      { $set: { image: result.secure_url } }, // Use $set to force update
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { image: result.secure_url },
       { new: true }
     );
 
-    if (!updatedSaree) {
-      console.log("❌ Saree not found in database!");
-      return res.status(404).json({ error: "❌ Saree not found" });
+    if (!updatedProduct) {
+      return res.status(404).json({ error: "❌ Product not found" });
     }
 
-    console.log("✅ MongoDB Updated Successfully:", updatedSaree);
-
-    res.json({ message: "✅ Image uploaded successfully", saree: updatedSaree });
-
-  } catch (error) {
-    console.error("❌ Upload error:", error);
+    res.json({ message: "✅ Image uploaded", product: updatedProduct });
+  } catch (err) {
+    console.error("❌ Upload error:", err);
     res.status(500).json({ error: "❌ Error uploading image" });
   }
 });
 
-// ✅ Proceed with Order and Transfer Cart Items to Order
+// ─── ORDER PROCEED ROUTE ──────────────────────────
 app.post("/:userId/proceed", async (req, res) => {
   const { userId } = req.params;
   try {
     const userCart = await Cart.find({ userId });
-    if (userCart.length === 0) {
-      return res.status(400).json({ error: "❌ No items in cart to proceed" });
+    if (!userCart.length) {
+      return res.status(400).json({ error: "❌ No items in cart" });
     }
-    
-    // ✅ Create a New Order
+
     const newOrder = new Order({
       userId,
       items: userCart.map(item => ({
@@ -144,39 +114,26 @@ app.post("/:userId/proceed", async (req, res) => {
     await newOrder.save();
     await Cart.deleteMany({ userId });
 
-    res.json({ success: true, message: "✅ Order placed successfully", order: newOrder });
-
-  } catch (error) {
-    console.error("❌ Error proceeding to buy:", error);
+    res.json({ success: true, message: "✅ Order placed", order: newOrder });
+  } catch (err) {
+    console.error("❌ Proceed error:", err);
     res.status(500).json({ error: "❌ Server error" });
   }
 });
 
-// ✅ Serve Static Files from Frontend
-app.use(express.static(path.join(__dirname, "frontend", "app", "build")));
-app.get("/home", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "app", "build", "index.html"));
-});
-app.get("/", (req, res) => {
-  res.json({ message: "✅ Backend is running with MongoDB Atlas!" });
-});
+// ─── REACT STATIC FILES ───────────────────────────
+const buildPath = path.join(__dirname, "frontend", "app", "build");
+if (fs.existsSync(buildPath)) {
+  app.use(express.static(buildPath));
+  app.get("*", (req, res) =>
+    res.sendFile(path.join(buildPath, "index.html"))
+  );
+} else {
+  console.warn("React build not found. Static files won't be served.");
+}
 
-// ✅ Handle Unknown Routes
-app.use((req, res) => {
-  res.status(404).json({ error: "❌ Route not found" });
-});
-
-// ✅ Global Error Handling Middleware
-app.use((err, req, res, next) => {
-  console.error("❌ Server Error:", err.message);
-  res.status(500).json({ error: "❌ Internal Server Error" });
-});
-
-// ✅ Start Server
+// ─── START SERVER ─────────────────────────────────
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-}).on("error", (err) => {
-  console.error("❌ Server startup error:", err.message);
-  process.exit(1);
-});
+app.listen(PORT, () =>
+  console.log(`🚀 Server running on http://localhost:${PORT}`)
+);

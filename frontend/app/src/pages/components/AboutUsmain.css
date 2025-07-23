@@ -17,7 +17,7 @@
   background-color: #947a8f;
   font-family: 'Playfair Display', serif;
   padding: 40px;
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Auth.css"; // ✅ Shared CSS file
+import "./Auth.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,13 +21,14 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log("Full login response:", data);
       if (!response.ok) throw new Error(data.error || "Login failed");
 
       console.log("✅ Login Successful:", data);
       localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/home");
     } catch (error) {
-      console.error("❌ Login Error:", error.message);
+      console.error(" Login Error:", error.message);
       setError(error.message);
     }
   };
