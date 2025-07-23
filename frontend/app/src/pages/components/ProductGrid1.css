@@ -1,4 +1,3 @@
-
 /* ----------  SECTION ---------- */
 .product-section {
   background-color: #ebd6dd;
@@ -7,6 +6,7 @@
   position: relative;
 }
 
+/* ----------  HEADER ---------- */
 .product-header {
   display: flex;
   justify-content: space-between;
@@ -23,7 +23,6 @@
   display: inline-block;
   color: rgb(123, 93, 17);
 }
-
 .product-header h2::after {
   content: "";
   position: absolute;
@@ -34,14 +33,12 @@
   background: rgb(123, 93, 17);
   transform: translateX(-50%);
 }
-
 .product-header a {
   font-size: .95rem;
   color: rgb(123, 93, 17);
   text-decoration: none;
   transition: var(--transition);
 }
-
 .product-header a:hover {
   text-decoration: underline;
 }
@@ -49,29 +46,30 @@
 /* ----------  PRODUCT GRID ---------- */
 .product-grid {
   display: flex;
-  gap: 2.5rem;
-  scroll-behavior: smooth; /* Smooth snap when arrows pressed */
-  justify-content: center; /* Center the grid */
+  gap: 3.8rem;
+  scroll-behavior: smooth;
+  justify-content: center;
 }
 
+/* ----------  CARD ---------- */
 .product-card {
   flex: 0 0 260px;
-  background: var(--body-bg);
-  border: 1.5px solid #cfb108; /* Golden border */
+  border: 1.5px solid #cfb108;
   border-radius: 53px;
   box-shadow: var(--shadow);
   padding-bottom: 1rem;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smoother transition */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
-  overflow: hidden; /* For pseudo-element effects */
+  overflow: hidden;
 }
 
 .product-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-  border-color: #FFC000; /* Slightly brighter gold on hover */
+  border-color: #FFC000;
 }
 
+/* shimmer */
 .product-card::before {
   content: '';
   position: absolute;
@@ -89,21 +87,17 @@
   transition: all 0.6s ease;
   opacity: 0;
 }
-
 .product-card:hover::before {
   opacity: 1;
   animation: shine 1.5s ease-in-out infinite;
 }
 @keyframes shine {
-  0% {
-    left: -50%;
-  }
-  100% {
-    left: 150%;
-  }
+  0%   { left: -50%; }
+  100% { left: 150%; }
 }
 
-/* ----------  CARD – IMAGE / “ARCH” SHAPE ---------- */
+/* ----------  CARD – IMAGE / VIDEO “ARCH” SHAPE ---------- */
+/* apply to both img and video */
 .card-img {
   position: relative;
   width: 100%;
@@ -112,22 +106,32 @@
   clip-path: path("M0 360L0 60Q0 0 60 0L200 0Q260 0 260 60L260 360Z");
 }
 
-.card-img img {
+/* target both images and videos */
+.card-img img,
+.card-img video {
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease, filter 0.3s ease;
   object-fit: cover;
+  transition: transform 0.5s ease, filter 0.3s ease;
 }
 
-.product-card:hover .card-img img {
+/* video specific defaults */
+.card-img video {
+  display: block;
+}
+
+/* hover zoom & brighten */
+.product-card:hover .card-img img,
+.product-card:hover .card-img video {
   transform: scale(1.05);
   filter: brightness(1.05);
 }
 
-/* Product code pill in top-right corner */
+/* Product code pill */
 .card-code {
   position: absolute;
   top: 0.75rem;
+  font-family: 'Playfair Display', serif;
   right: 0.75rem;
   background: var(--secondary);
   color: var(--text-light);
@@ -140,12 +144,13 @@
 /* ----------  CARD – DETAILS ---------- */
 .card-name {
   margin: 1rem 1rem 0.5rem;
-  font-size: 1rem; /* Increased font size for better readability */
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.4;
   color: var(--text-dark);
 }
 
+/* Add to Cart & Wishlist */
 .card-actions {
   display: flex;
   justify-content: space-between;
@@ -163,15 +168,14 @@
   color: var(--text-light);
   padding: .45rem .7rem;
   border-radius: 25px;
-  font-size: .9rem; /* Slightly larger font size */
+  font-size: .9rem;
   border: none;
   cursor: pointer;
   transition: var(--transition);
 }
-
 .add-btn:hover {
   transform: translateY(-2px);
-  color: var(--text-light)
+  background-color: #a87590;
 }
 
 .wish-btn {
@@ -183,29 +187,19 @@
   border-radius: 50%;
   cursor: pointer;
   transition: var(--transition);
-  color: var(--secondary);
-  /* Center the icon perfectly */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0; /* Remove any default padding */
+  padding: 0;
 }
-
-.wish-btn svg {
-  margin: 0; /* Remove any default margins from the icon itself */
-  width: 16px; /* Explicit width for the icon */
-  height: 16px; /* Explicit height for the icon */
-}
-
 .wish-btn:hover {
   background: var(--secondary);
   color: var(--text-light);
-}
-.wish-btn:hover {
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
+/* ----------  MOBILE ---------- */
 @media (max-width: 540px) {
   .product-card {
     flex: 0 0 210px;

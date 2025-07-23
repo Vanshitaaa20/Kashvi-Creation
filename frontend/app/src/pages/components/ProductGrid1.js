@@ -1,38 +1,38 @@
 import React, { useEffect, useRef } from "react";
-import {
-  FaHeart,
-  FaShoppingCart,
-} from "react-icons/fa";
-import "./ProductGrid1.css";    
+import { useNavigate } from "react-router-dom";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import "./ProductGrid1.css";
 
 const products = [
   {
     id: 20341,
-    name: "Rose Pink with Golden Embroidery",
-    img: "/images/product1.jpg",
+    name: "Crimson Red with Golden Embroidery",
+    video: "/videos/01.mp4",
   },
   {
     id: 20342,
-    name: "Crimson Red with Intricate Gold Embroidery",
-    img: "/images/product2.jpg",
+    name: "Emerald Green with Intricate Gold Embroidery",
+    video: "/videos/02.mp4",
   },
   {
     id: 20343,
-    name: "Emerald Green with Gold Embroidery",
-    img: "/images/product3.jpg",
+    name: "Rich Maroon with Gold Embroidery",
+    video: "/videos/03.mp4",
   },
   {
     id: 20344,
-    name: "Crimson Red with Gold Embroidery",
-    img: "/images/product4.jpg",
+    name: "Serene Blue with Gold Embroidery",
+    video: "/videos/05.mp4",
   },
 ];
 
-export default function ProductGrid() {
+export default function ProductGridmain() {
   const trackRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cards = trackRef.current?.children;
+    if (!cards) return;
     [...cards].forEach((card, i) => {
       card.style.opacity = 0;
       card.style.transform = "translateY(25px)";
@@ -56,22 +56,34 @@ export default function ProductGrid() {
       <div className="slider-wrapper">
         <div className="product-grid" ref={trackRef}>
           {products.map((p) => (
-            <div className="product-card" key={p.id}>
-              <a href={`/product/${p.id}`} className="card-link">
+            <div
+              className="product-card"
+              key={p.id}
+              onClick={() => navigate(`/ProductPage/${p._id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="card-link">
                 <div className="card-img">
-                  <img src={p.img} alt={p.name} loading="lazy" />
+                  <video
+                    src={p.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="product-video"
+                  />
                   <span className="card-code">{p.id}</span>
                 </div>
                 <p className="card-name">{p.name}</p>
-              </a>
+              </div>
 
               <div className="card-actions">
-                <button className="add-btn">
-                  <FaShoppingCart aria-hidden />
+                <button className="add-btn" onClick={(e) => e.stopPropagation()}>
+                  <FaShoppingCart aria-hidden="true" />
                   Add&nbsp;to&nbsp;Cart
                 </button>
-                <button className="wish-btn">
-                  <FaHeart aria-hidden />
+                <button className="wish-btn" onClick={(e) => e.stopPropagation()}>
+                  <FaHeart aria-hidden="true" />
                 </button>
               </div>
             </div>

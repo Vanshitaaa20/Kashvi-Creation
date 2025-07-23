@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Hero.css";
 
 const slides = [
@@ -26,6 +27,7 @@ const slides = [
 ];
 
 function Hero() {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVideoReady, setIsVideoReady] = useState(false);
   const videoRef = useRef(null);
@@ -82,7 +84,7 @@ function Hero() {
       <div className="hero-content">
         <h2>{slides[currentSlide].title}</h2>
         <p>{slides[currentSlide].description}</p>
-        <button className="shop-btn">Shop Now</button>
+        <button className="shop-btn" onClick={() => navigate("/catalogue")}>Shop Now </button>
       </div>
 
       {/* Navigation */}

@@ -1,51 +1,59 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import {
-  FaHeart,
-  FaShoppingCart,
-} from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { FaHeart, FaShoppingCart } from "react-icons/fa";
 import "./Catalogue.css";
 import Navbar from "./components/navbar";
 import Footer from "./components/Footer";
 
 const CataloguePage = () => {
-  const [sarees, setSarees] = useState([]);
-  const [filters, setFilters] = useState({ color: "", style: "" });
-  const [showFilterModal, setShowFilterModal] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialStyle = queryParams.get("type") || "";
 
+  const [sarees, setSarees] = useState([]);
+  const [filters, setFilters] = useState({ color: "", style: initialStyle });
+
+  // Update filters from query param on route change
+  useEffect(() => {
+    const styleFromQuery = new URLSearchParams(location.search).get("type") || "";
+    setFilters((prev) => ({ ...prev, style: styleFromQuery }));
+  }, [location.search]);
+
+  // Fetch sarees
   useEffect(() => {
     const fetchSarees = async () => {
       try {
         const response = await axios.get("http://localhost:5001/api/catalogue");
-        console.log("✅ API Response:", response.data);
-
         if (Array.isArray(response.data)) {
           setSarees(response.data);
         } else {
-          console.error("❌ Unexpected API Response:", response.data);
+          console.error("Unexpected API response:", response.data);
         }
       } catch (error) {
-        console.error("❌ Error fetching sarees:", error);
+        console.error("Error fetching sarees:", error);
       }
     };
 
     fetchSarees();
   }, []);
 
+  // Filter logic
   const filteredSarees = sarees.filter((saree) => {
     return (
       (filters.color === "" || saree.color === filters.color) &&
-      (filters.style === "" || saree.style === filters.style)
+      (filters.style === "" ||
+        (saree.style && saree.style.toLowerCase() === filters.style.toLowerCase()))
     );
   });
+
   return (
     <div className="explore-container">
       <Navbar />
       <h1>Our Collection</h1>
 
       <div className="catalogue-layout">
-        {/* 🔍 Sidebar Filters */}
+        {/* Sidebar Filters */}
         <aside className="filter-sidebar">
           <h3>Filters</h3>
 
@@ -55,9 +63,12 @@ const CataloguePage = () => {
               <label key={cat} className="filter-checkbox">
                 <input
                   type="checkbox"
-                  checked={filters.style === cat}
+                  checked={filters.style.toLowerCase() === cat.toLowerCase()}
                   onChange={() =>
-                    setFilters({ ...filters, style: filters.style === cat ? "" : cat })
+                    setFilters({
+                      ...filters,
+                      style: filters.style === cat ? "" : cat,
+                    })
                   }
                 />
                 {cat}
@@ -73,7 +84,10 @@ const CataloguePage = () => {
                   type="checkbox"
                   checked={filters.color === color}
                   onChange={() =>
-                    setFilters({ ...filters, color: filters.color === color ? "" : color })
+                    setFilters({
+                      ...filters,
+                      color: filters.color === color ? "" : color,
+                    })
                   }
                 />
                 <span style={{ color: color.toLowerCase(), fontWeight: "bold" }}>{color}</span>
@@ -81,12 +95,15 @@ const CataloguePage = () => {
             ))}
           </div>
 
-          <button className="reset-filter-button" onClick={() => setFilters({ color: "", style: "" })}>
+          <button
+            className="reset-filter-button"
+            onClick={() => setFilters({ color: "", style: "" })}
+          >
             Reset Filters
           </button>
         </aside>
 
-        {/* 🧵 Product Grid */}
+        {/* Product Grid */}
         <div className="saree-grid">
           {filteredSarees.length > 0 ? (
             filteredSarees.map((saree) => {
@@ -95,16 +112,16 @@ const CataloguePage = () => {
 
               return (
                 <div key={productId} className="saree-card">
-                  <Link to={`/product/${productId}`} state={{ saree }}>
+                  <Link to={`/ProductPage/${productId}`} state={{ saree }}>
                     <img src={saree.image} alt={saree.name} />
                     <h3>{saree.name}</h3>
                     <div className="card-actions">
                       <button className="add-btn">
-                        <FaShoppingCart aria-hidden />
+                        <FaShoppingCart />
                         Add&nbsp;to&nbsp;Cart
                       </button>
                       <button className="wish-btn">
-                        <FaHeart aria-hidden />
+                        <FaHeart />
                       </button>
                     </div>
                   </Link>
@@ -120,7 +137,6 @@ const CataloguePage = () => {
       <Footer />
     </div>
   );
-
-}
+};
 
 export default CataloguePage;

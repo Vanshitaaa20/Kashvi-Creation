@@ -37,7 +37,7 @@ const register = async (req, res) => {
     }
 };
 
-// ✅ Login User
+// Login User
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -64,7 +64,7 @@ const login = async (req, res) => {
     }
 };
 
-// ✅ Refresh Token API
+// Refresh Token API
 const refreshToken = async (req, res) => {
     const { token } = req.body;
     if (!token) return res.status(401).json({ error: "Refresh token required" });

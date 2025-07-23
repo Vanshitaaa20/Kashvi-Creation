@@ -5,8 +5,8 @@ function Collection() {
   const navigate = useNavigate();
 
   const collections = [
-    { name: "Designer Collection", image: "/images/designer-collection.jpg" },
-    { name: "Bridal Collection", image: "/images/bridal-collection.jpg" }
+    { name: "Designer Collection", image: "../images/360_F_236948440_HkJa44cIHM2VNqIcxDjmlTIBgAbJFCEN.jpg", type: "Designer" },
+    { name: "Bridal Collection", image: "../images/d6bff17c9aac7315344ecd25289d5eef.jpg", type : "Bridal" }
   ];
 
   return (
@@ -14,7 +14,12 @@ function Collection() {
       <h2>Our Exclusive Collection</h2>
       <div className="collection-grid">
         {collections.map((collection, index) => (
-          <div className="collection-card" key={index}>
+          <div
+            className="collection-card"
+            onClick={() => navigate(`/catalogue?type=${collection.type}`)}
+            key={index}
+          >
+
             <img src={collection.image} alt={collection.name} className="collection-image" />
             <div className="collection-overlay">
               <h3>{collection.name}</h3>

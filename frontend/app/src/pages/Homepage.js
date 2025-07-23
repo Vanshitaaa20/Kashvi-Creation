@@ -1,19 +1,19 @@
 import React from "react";
 import "./Homepage.css";
 import Hero from "./components/Hero";
-import ProductGrid from "./components/ProductGrid1";
+import ProductGridmain from "./components/ProductGrid1";
 import Collection from "./components/Collection";
 import AboutUs from "./components/AboutUsmain";
 import Footer from "./components/Footer";
-import Navbar from "./components/navbar"; // 👈 Import the new component
+import Navbar from "./components/navbar";
 
 function Home() {
   return (
     <div className="modern-app">
-      <Navbar /> {/* ✅ Use the component */}
+      <Navbar />
       <main>
         <Hero />
-        <ProductGrid />
+        <ProductGridmain />
         <Collection />
         <AboutUs />
       </main>
